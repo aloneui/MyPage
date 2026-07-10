@@ -26,4 +26,11 @@ body,
 body {
     display: block;
     /* Remove default flex centering */
+    overscroll-behavior: none;
+    touch-action: pan-x pan-y;
+}
+
+#root {
+    position: fixed;
+    inset: 0;
 }

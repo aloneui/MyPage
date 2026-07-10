@@ -1,9 +1,8 @@
 import "./App.css";
-// 只保留核心的水母 3D 组件和样式
 import Medusae from "./medusae/Medusae.jsx";
 import "./medusae/medusae.css";
+import { siteContent } from "./siteContent.js";
 
-// 1. 将你的专属配置固化为唯一的默认样式
 const MY_DEFAULT_CONFIG = {
   cursor: {
     radius: 0.065,
@@ -39,38 +38,44 @@ const MY_DEFAULT_CONFIG = {
     colorThree: "#faba03",
   },
   background: {
-    color: "#ffffff", // 纯白背景
+    color: "#ffffff",
   },
 };
 
 function App() {
   return (
     <div className="app" style={{ backgroundColor: MY_DEFAULT_CONFIG.background.color }}>
-      
-      {/* 2. 这里是你加盖的 2D UI 浮层 */}
-      <div 
-        className="my-project-overlay" 
-        style={{
-          position: "absolute",
-          top: "10%",
-          left: "50%",
-          transform: "translateX(-50%)",
-          zIndex: 5,
-          color: "#111111",           // ⚡ 因为背景变成了纯白，文字颜色改为深色以保证可见度
-          textAlign: "center",
-          fontFamily: "sans-serif",
-          pointerEvents: "none",      // 允许鼠标事件穿透到下方的 3D 场景
-        }}
-      >
-        <h1 style={{ margin: "0 0 10px 0", fontSize: "2.5rem", letterSpacing: "2px" }}>
-          BREATH DEAR MEDUSAE
-        </h1>
-        <p style={{ margin: 0, opacity: 0.7, fontSize: "1.1rem" }}>
-          一个基于 React 19 + Three.js 的粒子水母艺术空间
-        </p>
-      </div>
+      <section className="my-project-overlay" aria-label={siteContent.navLabel}>
+        <div className="intro-copy">
+          <h1>{siteContent.title}</h1>
+          <p>{siteContent.subtitle}</p>
+        </div>
 
-      {/* 3. 直接将静态配置传给水母，去掉了所有菜单、控制函数和状态机 */}
+        <nav className="project-nav" aria-label={siteContent.projectListLabel}>
+          {siteContent.projects.map((project) => (
+            <a className="project-card" href={project.href} key={project.title}>
+              <span className="project-card__tag">{project.tag}</span>
+              <span className="project-card__body">
+                <strong>{project.title}</strong>
+                <small>{project.description}</small>
+              </span>
+              <span className="project-card__arrow" aria-hidden="true">
+                &rarr;
+              </span>
+            </a>
+          ))}
+        </nav>
+
+        <footer className="site-footer">
+          <span>{siteContent.footer.copyright}</span>
+          {siteContent.footer.icpHref ? (
+            <a href={siteContent.footer.icpHref}>{siteContent.footer.icpText}</a>
+          ) : (
+            <span>{siteContent.footer.icpText}</span>
+          )}
+        </footer>
+      </section>
+
       <Medusae config={MY_DEFAULT_CONFIG} />
     </div>
   );
